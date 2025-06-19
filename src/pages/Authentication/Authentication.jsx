@@ -6,6 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signinSchema } from "../../schemas/signinSchema";
 import { ErrorSpan } from "../../components/Navbar/NavbarStyled";
 import { signupSchema } from "../../schemas/signupSchema";
+import { signin, signup } from "../../services/userServices";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 // import { zodResolver } from "@hookform/resolvers/zod";
 
 export function Authentication() {
@@ -21,12 +24,26 @@ export function Authentication() {
     formState: { errors: errorsSignin },
   } = useForm({ resolver: zodResolver(signinSchema) });
 
-  function inHandleSubmit(data) {
-    console.log(data);
+  async function inHandleSubmit(data) {
+    try {
+      const response = await signin(data);
+      Cookies.set("token", response.data, { expires: 1 });
+      navigate("/");
+    } catch (err) {
+      console.log("Error in signup:", err);
+    }
   }
 
-  function upHandleSubmit(data) {
-    console.log(data);
+  const navigate = useNavigate();
+
+  async function upHandleSubmit(data) {
+    try {
+      const response = await signup(data);
+      Cookies.set("token", response.data, { expires: 1 });
+      navigate("/");
+    } catch (err) {
+      console.log("Error in signup:", err);
+    }
   }
 
   return (
@@ -94,7 +111,7 @@ export function Authentication() {
           {errorsSignup.confirmPassword && (
             <ErrorSpan>{errorsSignup.confirmPassword.message}</ErrorSpan>
           )}
-          <Button type="submit" text="Cadastrar"></Button>
+          <Button type="submit" text="Cadastrar" />
         </form>
       </Section>
     </AuthContainer>

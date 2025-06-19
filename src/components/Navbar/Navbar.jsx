@@ -1,10 +1,19 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import logo from "../../images/logoBN.png";
-import { ErrorSpan, ImageLogo, InputSpace, Nav } from "./NavbarStyled";
+import {
+  ErrorSpan,
+  ImageLogo,
+  InputSpace,
+  Nav,
+  UserLoggedSpace,
+} from "./NavbarStyled";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../Button/Button";
 import { searchSchema } from "../../schemas/searchSchema";
+import { userLogged } from "../../services/userServices";
+import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 
 export function Navbar() {
   const {
@@ -16,6 +25,7 @@ export function Navbar() {
     resolver: zodResolver(searchSchema),
   });
   const navigate = useNavigate();
+  const [user, setUser] = useState({});
 
   function onSearch(data) {
     const { title } = data;
@@ -23,9 +33,25 @@ export function Navbar() {
     reset();
   }
 
-  function goAuth() {
+  async function findUserLogged() {
+    try {
+      const response = await userLogged();
+      setUser(response.data);
+    } catch (err) {
+      console.log("Error finding user:", err);
+    }
+  }
+
+  function signout() {
+    Cookies.remove("token");
+    setUser({});
     navigate("/auth");
   }
+
+  useEffect(() => {
+    if (Cookies.get("token")) findUserLogged();
+  }, []);
+
   return (
     <>
       <Nav>
@@ -46,11 +72,18 @@ export function Navbar() {
           <ImageLogo src={logo} alt="Logo do Breaking News" />
         </Link>
 
-        <Link to="/auth">
-          <Button type="button" text="entrar">
-            Entrar
-          </Button>
-        </Link>
+        {user ? (
+          <UserLoggedSpace>
+            <h2>{user.name}</h2>
+            <i className="bi bi-box-arrow-right" onClick={signout}></i>
+          </UserLoggedSpace>
+        ) : (
+          <Link to="/auth">
+            <Button type="button" text="entrar">
+              Entrar
+            </Button>
+          </Link>
+        )}
       </Nav>
       {errors.title && <ErrorSpan>{errors.title.message}</ErrorSpan>}
       <Outlet />
