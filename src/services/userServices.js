@@ -8,10 +8,8 @@ export function signup(data) {
   const body = {
     ...data,
     username: generateUserName(data.name),
-    avatar:
-      "https://i.pinimg.com/1200x/bb/e3/02/bbe302ed8d905165577c638e908cec76.jpg",
-    background:
-      "https://img.freepik.com/free-vector/paper-style-dynamic-lines-background_23-2149008629.jpg?semt=ais_hybrid&w=740",
+    avatar: "https://i.imgur.com/xmI2QAo.jpg",
+    background: "https://i.imgur.com/XbRg9D7.png",
   };
   const response = axios.post(`${baseURL}/user/create`, body);
   return response;
