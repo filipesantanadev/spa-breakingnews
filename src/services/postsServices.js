@@ -35,3 +35,30 @@ export function createNews(body) {
   });
   return response;
 }
+
+export function getNewsById(id) {
+  const response = axios.get(`${baseURL}/posts/byIdPost/${id}`, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get("token")}`,
+    },
+  });
+  return response;
+}
+
+export function editNews(body, id) {
+  const response = axios.patch(`${baseURL}/posts/update/${id}`, body, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get("token")}`,
+    },
+  });
+  return response;
+}
+
+export function deleteNews(id) {
+  const response = axios.delete(`${baseURL}/posts/delete/${id}`, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get("token")}`,
+    },
+  });
+  return response;
+}
