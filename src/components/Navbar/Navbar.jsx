@@ -74,7 +74,7 @@ export function Navbar() {
           <ImageLogo src={logo} alt="Logo do Breaking News" />
         </Link>
 
-        {user ? (
+        {user && Cookies.get("token") ? (
           <UserLoggedSpace>
             <Link to="/profile" style={{ textDecoration: "none" }}>
               <ImageUserLogo src={user.avatar} alt="Foto do usuário" />
