@@ -32,12 +32,8 @@ export default function Home() {
     const userResponse = await userLogged();
     setUser(userResponse.data);
     await likeNews(postId);
-    // Recarrega todos os posts do usuário após o like
-    const postsResponse = await getAllPosts();
-    setPosts(postsResponse.data.results);
-    // Atualiza o topPost também, se necessário
-    const topPostResponse = await getTopPost();
-    setTopPost(topPostResponse.data.post);
+    // Recarrega todos os posts (incluindo o topPost) do usuário após o like
+    findPost();
   }
 
   useEffect(() => {

@@ -28,7 +28,6 @@ export function Profile() {
   async function findUserById() {
     try {
       const userResponse = await userLogged();
-      console.log(userResponse);
       setUser(userResponse.data);
     } catch (error) {
       console.log(error);

@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import { TextLimit } from "../TextLimit/TextLimit";
 import { CardBody, CardContainer, CardFooter, CardHeader } from "./CardStyled";
-import { likeNews } from "../../services/postsServices";
-import { useEffect, useState } from "react";
 
 export function Card({
   top,
