@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { TextLimit } from "../TextLimit/TextLimit";
 import { CardBody, CardContainer, CardFooter, CardHeader } from "./CardStyled";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../Context/UserContext";
+import Cookies from "js-cookie";
 
 export function Card({
   top,
@@ -13,11 +16,29 @@ export function Card({
   id,
   onLike,
 }) {
+  const { user } = useContext(UserContext);
+  const [liked, setLiked] = useState(false);
+
   async function handleLike() {
     if (onLike) {
       await onLike(id);
+      checkLiked();
     }
   }
+
+  function checkLiked() {
+    try {
+      const userLiked = likes?.some((like) => like.userId === user._id);
+      // Verifica se o usuário atual já curtiu a postagem
+      setLiked(Boolean(userLiked));
+    } catch (error) {
+      console.error("Error checking if user liked the post:", error);
+    }
+  }
+
+  useEffect(() => {
+    checkLiked();
+  }, [likes, user?.id]);
 
   return (
     <CardContainer>
@@ -39,7 +60,17 @@ export function Card({
           </CardHeader>
           <CardFooter>
             <section>
-              <i onClick={handleLike} className="bi bi-hand-thumbs-up"></i>
+              <i
+                onClick={handleLike}
+                className={
+                  liked && Cookies.get("token")
+                    ? "bi bi-hand-thumbs-up-fill"
+                    : "bi bi-hand-thumbs-up"
+                }
+                style={{
+                  color: liked && Cookies.get("token") ? "#007bff" : "inherit",
+                }}
+              ></i>
               <span>{likes?.length}</span>
             </section>
             <section>
