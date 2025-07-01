@@ -14,9 +14,10 @@ import {
 import { Card } from "../../components/Card/Card";
 import { getAllPostsByUser } from "../../services/postsServices";
 import { Link } from "react-router-dom";
+import { userLogged } from "../../services/userServices";
 
 export function Profile() {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const [posts, setPosts] = useState([]);
 
   async function findAllPostsByUser() {
@@ -24,15 +25,28 @@ export function Profile() {
     setPosts(postsResponse.data.postsByUser);
   }
 
+  async function findUserById() {
+    try {
+      const userResponse = await userLogged();
+      console.log(userResponse);
+      setUser(userResponse.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     findAllPostsByUser();
+    findUserById();
   }, []);
 
   return (
     <ProfileContainer>
       <ProfileHeader>
         <ProfileIconEdit>
-          <i className="bi bi-pencil-square"></i>
+          <Link to={`/manage-profile/edit/${user._id}`}>
+            <i className="bi bi-pencil-square"></i>
+          </Link>
         </ProfileIconEdit>
         <ProfileBackground src={user.background} alt="" />
 

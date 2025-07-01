@@ -3,6 +3,7 @@ import logo from "../../images/logoBN.png";
 import {
   ErrorSpan,
   ImageLogo,
+  ImageUserLogo,
   InputSpace,
   Nav,
   UserLoggedSpace,
@@ -76,7 +77,8 @@ export function Navbar() {
         {user ? (
           <UserLoggedSpace>
             <Link to="/profile" style={{ textDecoration: "none" }}>
-              <h2>{user.name}</h2>
+              <ImageUserLogo src={user.avatar} alt="Foto do usuário" />
+              {/* <h2>{user.name}</h2> */}
             </Link>
             <i className="bi bi-box-arrow-right" onClick={signout}></i>
           </UserLoggedSpace>

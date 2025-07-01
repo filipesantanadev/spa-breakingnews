@@ -97,3 +97,18 @@ export const UserLoggedSpace = styled.div`
     color: #043546;
   }
 `;
+
+export const ImageUserLogo = styled.img`
+  border-radius: 50%;
+  width: 2rem;
+  border: solid 3px #fff;
+  object-fit: cover;
+  object-position: center;
+
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    border: solid 3px #043546;
+    width: 2.1rem;
+  }
+`;
