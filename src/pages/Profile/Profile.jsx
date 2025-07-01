@@ -12,7 +12,7 @@ import {
   ProfileUser,
 } from "./ProfileStyled";
 import { Card } from "../../components/Card/Card";
-import { getAllPostsByUser } from "../../services/postsServices";
+import { getAllPostsByUser, likeNews } from "../../services/postsServices";
 import { Link } from "react-router-dom";
 import { userLogged } from "../../services/userServices";
 
@@ -33,6 +33,13 @@ export function Profile() {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async function handleLike(postId) {
+    await likeNews(postId);
+    // Recarrega todos os posts do usuário após o like
+    const response = await getAllPostsByUser();
+    setPosts(response.data.postsByUser);
   }
 
   useEffect(() => {
@@ -79,6 +86,7 @@ export function Profile() {
               likes={item.likes}
               comments={item.comments}
               actions={true}
+              onLike={handleLike}
             />
           );
         })}

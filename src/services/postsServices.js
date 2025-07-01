@@ -62,3 +62,12 @@ export function deleteNews(id) {
   });
   return response;
 }
+
+export function likeNews(id, userid) {
+  const response = axios.patch(`${baseURL}/posts/${id}/like`, userid, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get("token")}`,
+    },
+  });
+  return response;
+}

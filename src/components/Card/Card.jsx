@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { TextLimit } from "../TextLimit/TextLimit";
 import { CardBody, CardContainer, CardFooter, CardHeader } from "./CardStyled";
+import { likeNews } from "../../services/postsServices";
+import { useEffect, useState } from "react";
 
 export function Card({
   top,
@@ -11,7 +13,14 @@ export function Card({
   banner,
   actions = false,
   id,
+  onLike,
 }) {
+  async function handleLike() {
+    if (onLike) {
+      await onLike(id);
+    }
+  }
+
   return (
     <CardContainer>
       <CardBody>
@@ -32,7 +41,7 @@ export function Card({
           </CardHeader>
           <CardFooter>
             <section>
-              <i className="bi bi-hand-thumbs-up"></i>
+              <i onClick={handleLike} className="bi bi-hand-thumbs-up"></i>
               <span>{likes?.length}</span>
             </section>
             <section>
